@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dot Challenge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      padding: 20px;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #startButton {
+      padding: 20px 40px;
+      font-size: 24px;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #startButton:hover {
+      background-color: #c0392b;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #3498db;
+      position: absolute;
+      transition: background-color 0.2s ease;
+    }
+
+    .message {
+      font-size: 36px;
+      margin-top: 20px;
+      color: #2c3e50;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    .insult {
+      font-size: 24px;
+      color: #e74c3c;
+      font-weight: bold;
+      margin-top: 10px;
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    .hidden {
+      display: none;
+    }
+	  .custom-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+    .custom-button img {
+      width: 40px;
+      height: 40px;
+    }
+    .custom-button img:hover {
+      opacity: 0.8;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <a href="http://jadeisdead.com/" target="_blank" class="custom-button">
+    <img src="https://media.tenor.com/yso9Ncqwm5UAAAAi/click-subscribe.gif" alt="Custom Button">
+  </a>
+
+  <button id="startButton">Start</button>
+  <div class="message hidden" id="instructionMessage">Find the off-color dot!</div>
+  <div class="insult hidden" id="insultMessage"></div>
+
+  <script>
+    const insults = [
+      "You're not even trying, are you?",
+      "This is embarrassing for you.",
+      "You must be really bad at this.",
+      "Is your brain working today?",
+      "You're hopeless, aren't you?",
+      "Try harder, I guess.",
+      "This is just sad, honestly.",
+      "Really? That's the best you can do?",
+      "I expected more from you. Pathetic.",
+      "You actually thought you could do this? Lol.",
+      "Give up, you're just wasting your time.",
+      "Did you actually believe you'd succeed?",
+      "You're not going to find anything. Ever.",
+      "This is as good as it's going to get.",
+      "Is this your best effort? It's weak.",
+      "Maybe try clicking somewhere else? Oh wait, you can't.",
+      "Still clicking? Wow, impressive… not.",
+      "How much longer are you going to waste?",
+      "You're really bad at this, huh?",
+      "Maybe you should take a break... just quit.",
+      "You’ve been clicking forever, and what do you have to show for it?",
+      "No, seriously, this is pathetic.",
+      "You think you’re going to find something? Think again.",
+      "This is so painful to watch.",
+      "You’re not even trying at this point.",
+      "Honestly, I could do better with my eyes closed.",
+      "Amazingly bad. You deserve a medal for this kind of failure.",
+      "Well, I guess clicking is the only thing you're good at.",
+      "Just face it. You're not going to find anything.",
+      "Wow, you're still clicking? Sad.",
+      "What part of this are you enjoying?",
+      "You're making this harder than it needs to be.",
+      "It's like you don't even know how to click properly.",
+      "You’ve reached a new level of bad."
+    ];
+
+    let dotCount = 0;
+    let insultInterval;
+    let dots = [];
+
+    const startButton = document.getElementById('startButton');
+    const instructionMessage = document.getElementById('instructionMessage');
+    const insultMessage = document.getElementById('insultMessage');
+
+    startButton.addEventListener('click', startGame);
+
+    function startGame() {
+      startButton.classList.add('hidden');
+      instructionMessage.classList.remove('hidden');
+
+      insultInterval = setInterval(() => {
+        const randomInsult = insults[Math.floor(Math.random() * insults.length)];
+        insultMessage.textContent = randomInsult;
+        insultMessage.classList.remove('hidden');
+        setTimeout(() => insultMessage.classList.add('hidden'), 3000);
+      }, 5000); // Insults every 5 seconds
+
+      scatterDots();
+    }
+
+    function scatterDots() {
+      for (let i = 0; i < 1000; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.style.left = Math.random() * window.innerWidth + 'px';
+        dot.style.top = Math.random() * window.innerHeight + 'px';
+        document.body.appendChild(dot);
+        dots.push(dot);
+        dot.addEventListener('click', handleClick);
+      }
+    }
+
+    function handleClick() {
+      // Since no off-color dot exists, all clicks are "wrong"
+      const randomInsult = insults[Math.floor(Math.random() * insults.length)];
+      insultMessage.textContent = randomInsult;
+      insultMessage.classList.remove('hidden');
+      setTimeout(() => insultMessage.classList.add('hidden'), 3000);
+    }
+  </script>
+
+</body>
+</html>
